@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import './css/LoginPage.css'
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,15 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const {login} = useAuth();
+    const {login, user} = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(user) {
+            navigate("/personal")
+        }
+    }, [user])
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -33,7 +40,7 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit}>
                   
                     <div>
-                        <label htmlFor="email">Emailadress</label>
+                        <label htmlFor="email">Email-adress</label>
                         <input type="email" id="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div>

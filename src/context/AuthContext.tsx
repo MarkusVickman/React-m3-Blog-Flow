@@ -1,5 +1,6 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { User, LoginCredentials, AuthResponse, AuthContextType } from "../types/auth.types";
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -28,8 +29,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             const data = await res.json() as AuthResponse;
 
-            localStorage.setItem("trespasser", data.token);
-            setUser(data.user);
+            const decoded: User = jwtDecode(data.access_token);
+
+            localStorage.setItem("trespasser", data.access_token);
+            setUser({
+                email: decoded.email,
+                name: decoded.name,
+                isAdmin: decoded.isAdmin,
+            });
 
         } catch (error) {
             throw error;
@@ -41,6 +48,42 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.removeItem("trespasser");
         setUser(null);
     }
+
+    const checkToken = async () => {
+        const token = localStorage.getItem("access_token");
+
+        if (!token) {
+            return;
+        }
+        try {
+            const res = await fetch("https://react-m3-backend-nest-js-1050979898493.us-central1.run.app/auth/profile", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer" + token
+                }
+            });
+
+            if (res.ok) {
+                const data = await res.json() as AuthResponse;
+                const decoded: User = jwtDecode(data.access_token);
+                setUser({
+                    email: decoded.email,
+                    name: decoded.name,
+                    isAdmin: decoded.isAdmin,
+                });
+            }
+
+        } catch {
+            localStorage.removeItem("access_token");
+        }
+    }
+
+    useEffect(() => {
+        checkToken();
+    }, [])
+
+
 
     return (
         <AuthContext.Provider value={{ user, login, logout }}>
