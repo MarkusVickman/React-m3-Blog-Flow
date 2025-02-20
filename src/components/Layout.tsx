@@ -1,15 +1,21 @@
 import Header from "./Header"
 import { Outlet } from "react-router-dom"
+import Footer from "./Footer"
+import './Layout.css';
 
 const Layout = () => {
   return (
     <>
-    <Header />
-    <main>
-    <Outlet />
+      <div className='page-container'>
+        <div className="page-height-without-footer">
+          <Header />
+          <main>
+            <Outlet />
 
-    </main>
-    <footer> <b>Lägg in footer-komponent här istället!</b> </footer>
+          </main>
+        </div>
+        <Footer />
+      </div>
     </>
   )
 }

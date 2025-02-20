@@ -65,13 +65,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }
 
-    const logout = () => {
-        localStorage.removeItem("trespasser");
-        setUser(null);
-    }
 
     const checkToken = async () => {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("trespasser");
 
         if (!token) {
             return;
@@ -81,13 +77,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer" + token
+                    "Authorization": "Bearer " + token
                 }
             });
 
             if (res.ok) {
-                const data = await res.json() as AuthResponse;
-                const decoded: User = jwtDecode(data.access_token);
+                const decoded: User = jwtDecode(token);
                 setUser({
                     email: decoded.email,
                     name: decoded.name,
@@ -95,10 +90,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 });
             }
 
-        } catch {
-            localStorage.removeItem("access_token");
+
+        } catch(error) {
+            localStorage.removeItem("trespasser");
+            setUser(null);
+            console.log("Error: " + error);
         }
     }
+
+
+    const logout = () => {
+        localStorage.removeItem("trespasser");
+        setUser(null);
+    }
+
 
     useEffect(() => {
         checkToken();

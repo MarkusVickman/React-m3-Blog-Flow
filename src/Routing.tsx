@@ -7,6 +7,7 @@ import PersonalPage from './pages/PersonalPage';
 import SinglePostPage from './pages/SinglePostPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import { BlogProvider } from './context/BlogContext';
 
 const router = createBrowserRouter([
 
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <HomePage />
+                element: <BlogProvider><HomePage /></BlogProvider>
             },
             {
                 path: "/login",
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/personal",
-                element: (<ProtectedRoute> <PersonalPage /> </ProtectedRoute>)
+                element: (<ProtectedRoute> <BlogProvider><PersonalPage /></BlogProvider> </ProtectedRoute>)
             },
             {
                 path: "/single/:id",

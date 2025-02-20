@@ -1,0 +1,5 @@
+/*För att footern ska fungera på ett bra sätt*/
+.page-container {
+    position: relative;
+    min-height: 100vh;
+}

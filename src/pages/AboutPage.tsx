@@ -2,7 +2,7 @@ import './css/AboutPage.css'
 
 const AboutPage = () => {
   return (
-    <div>Om oss</div>
+    <h1 className="title">Om Flow</h1>
   )
 }
 
