@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PersonalPage from './pages/PersonalPage';
 import SinglePostPage from './pages/SinglePostPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 const router = createBrowserRouter([
 
@@ -22,11 +23,15 @@ const router = createBrowserRouter([
                 element: <LoginPage />
             },
             {
+                path: "/register",
+                element: <RegisterPage />
+            },
+            {
                 path: "/personal",
                 element: (<ProtectedRoute> <PersonalPage /> </ProtectedRoute>)
             },
             {
-                path: "/single",
+                path: "/single/:id",
                 element: <SinglePostPage />
             },
             {

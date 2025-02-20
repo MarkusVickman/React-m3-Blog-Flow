@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
-import { User, LoginCredentials, AuthResponse, AuthContextType } from "../types/auth.types";
+import { User, LoginCredentials, AuthResponse, AuthContextType, RegisterCredentials } from "../types/auth.types";
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -44,6 +44,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     }
 
+
+    const register = async (credentials: RegisterCredentials) => {
+
+        try {
+            const res = await fetch("https://react-m3-backend-nest-js-1050979898493.us-central1.run.app/user/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(credentials)
+            })
+
+            if (!res.ok) {
+                throw new Error("Registrering misslyckades");
+            }
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
     const logout = () => {
         localStorage.removeItem("trespasser");
         setUser(null);
@@ -86,7 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, register }}>
             {children}
         </AuthContext.Provider>
 
