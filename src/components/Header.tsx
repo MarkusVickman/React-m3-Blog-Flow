@@ -10,7 +10,7 @@ const Header = () => {
 
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <a className="navbar-item is-size-3 has-text-weight-bold">Flow</a>
+                    <NavLink to="/" className="navbar-item is-size-3 has-text-weight-bold">Flow</NavLink>
 
                     <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                         <span aria-hidden="true"></span>

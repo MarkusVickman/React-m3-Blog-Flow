@@ -8,6 +8,7 @@ import SinglePostPage from './pages/SinglePostPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { BlogProvider } from './context/BlogContext';
+import FollowUserPage from './pages/FollowUserPage';
 
 const router = createBrowserRouter([
 
@@ -28,12 +29,16 @@ const router = createBrowserRouter([
                 element: <RegisterPage />
             },
             {
+                path: "/follow/:email",
+                element: <BlogProvider><FollowUserPage /></BlogProvider>
+            },
+            {
                 path: "/personal",
                 element: (<ProtectedRoute> <BlogProvider><PersonalPage /></BlogProvider> </ProtectedRoute>)
             },
             {
                 path: "/single/:id",
-                element: <SinglePostPage />
+                element: <BlogProvider><SinglePostPage /></BlogProvider>
             },
             {
                 path: "/about",

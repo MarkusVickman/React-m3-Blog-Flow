@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react"
 import './css/LoginPage.css'
 import { useBlog } from "../context/BlogContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Blog } from "../types/blog.types"
+import { NavLink } from 'react-router-dom';
 
 
 const HomePage = () => {
@@ -31,7 +32,7 @@ const HomePage = () => {
         <h1 className="title ">The Flow</h1>
 
         {blog.map((item: Blog) => (
-          <article className="card">
+          <article className="card"  key={item.id}>
             <div className="card-header">
               <p className="card-header-title">{item.heading}</p>
             </div>
@@ -39,8 +40,8 @@ const HomePage = () => {
               <p className="content">
                 {item.about}
                 </p>
-                <a href={item.email} className="mr-5">@{item.name}#All</a>
-                <a href={"/single/:" + item.id} className="mr-5">@{item.name}#{item.id}</a>
+                <NavLink to={"/follow/" + item.email} className="mr-5">@{item.name}#All</NavLink>
+                <NavLink to={"/single/" + item.id} className="mr-5">@{item.name}#{item.id}</NavLink>
                 <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
             </div>
           </article>

@@ -58,7 +58,7 @@ const PersonalPage = () => {
       <div className="container mt-5">
         <h2 className="title">Ditt Flow</h2>
         {userBlog.map((item: Blog) => (
-          <article className="card">
+          <article className="card"  key={item.id}>
             <div className="card-header">
               <p className="card-header-title">{item.heading}</p>
             </div>
