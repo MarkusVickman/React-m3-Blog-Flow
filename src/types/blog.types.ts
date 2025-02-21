@@ -7,9 +7,16 @@ export interface Blog {
     name: string
 }
 
+export interface PostBlog {
+    heading: string,
+    about: string,
+}
+
 export interface BlogContextType {
     blog: Blog[] | null,
-    allBlog: () => void,
+    allBlog: () => void,    
+    postBlog: (blog: PostBlog) => void,
+    putBlog: (blog: PostBlog, id: number) => void,
     userBlog: Blog[] | null
 }
 

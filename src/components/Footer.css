@@ -9,6 +9,7 @@ footer {
     position: sticky;
     z-index: 2;
     top: 100vh;
+    margin-top: 20px;
   }
   
   footer p {

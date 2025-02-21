@@ -2,25 +2,61 @@
 import React, { useEffect, useState } from "react"
 import './css/LoginPage.css'
 import { useBlog } from "../context/BlogContext";
-import { Blog } from "../types/blog.types"
-
+import { Blog, PostBlog } from "../types/blog.types"
+import { useAuth } from "../context/AuthContext";
 
 const PersonalPage = () => {
 
-  const { userBlog, allBlog } = useBlog();
-      const [newHeading, setNewHeading] = useState('');
-      const [newAbout, setNewAbout] = useState('');
-     // const [error, setError] = useState('');
-      const [date, setDate] = useState(new Date().toLocaleDateString());
+  const { userBlog, allBlog, blog, postBlog, putBlog } = useBlog();
+  const { user } = useAuth();
+  const [newHeading, setNewHeading] = useState('');
+  const [newAbout, setNewAbout] = useState('');
+  const [formHeader, setFormHeader] = useState('Nytt inlägg');
+  const [id, setId] = useState<number | null>(null);
+  // const [error, setError] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString());
 
-      //const thisDate = new Date().toLocaleDateString();
-      //setDate(thisDate);
-
+  //const thisDate = new Date().toLocaleDateString();
+  //setDate(thisDate);
 
   useEffect(() => {
     allBlog();
   }, []);
 
+  useEffect(() => {
+    setNewAbout('');
+    setNewHeading('');
+    setId(null);
+    setFormHeader("Nytt inlägg");
+  }, [blog]);
+
+  const submitPost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newPost: PostBlog = {
+      heading: newHeading,
+      about: newAbout
+    }
+    postBlog(newPost);
+  }
+
+  const submitPut = async () => {
+    const newPost: PostBlog = {
+      heading: newHeading,
+      about: newAbout
+    }
+    if (id !== null) {
+      putBlog(newPost, id);
+    }
+  }
+
+  const fillForm = (blog: Blog) => {
+
+    setNewAbout(blog.about);
+    setNewHeading(blog.heading);
+    setId(blog.id);
+    setFormHeader("Redigera inlägg: " + blog.id);
+
+  }
 
   if (!userBlog) {
 
@@ -35,22 +71,28 @@ const PersonalPage = () => {
       <div className="container mt-4">
         <h1 className="title ">Hantera ditt Flow</h1>
 
-        <h2 className="title mt-5">Nytt inlägg</h2>
-        <form className="card">
+        <h2 className="title mt-5">{formHeader}</h2>
+        <form className="card" onSubmit={submitPost}>
 
           <div className="card-header">
-          <input className="card-header-title input" type="text" id="newheading" placeholder="Titel.." required value={newHeading} onChange={(e) => setNewHeading(e.target.value)} />
+            <input className="card-header-title input" type="text" id="newheading" placeholder="Titel.." required value={newHeading} onChange={(e) => setNewHeading(e.target.value)} />
           </div>
 
           <div className="card-content">
-          <input className="input" type="text" id="newabout" placeholder="Skriv här.." required value={newAbout} onChange={(e) => setNewAbout(e.target.value)} />
-          <time className="is-size-7 is-pulled-right"><b>{date}</b></time>
+            <input className="input" type="text" id="newabout" placeholder="Skriv här.." required value={newAbout} onChange={(e) => setNewAbout(e.target.value)} />
+            <time className="is-size-7 is-pulled-right"><b>{date}</b></time>
           </div>
-          
+
           <div className="card-footer">
-          <button className="card-footer-item has-text-weight-bold" type="submit">
-            Spara
-          </button>
+            {!id ? (
+              <button className="card-footer-item has-text-weight-bold" type="submit">
+                Spara
+              </button>
+            ) :
+              <button className="card-footer-item has-text-weight-bold" onClick={submitPut}>
+                Ändra
+              </button>
+            }
           </div>
         </form>
       </div>
@@ -58,7 +100,7 @@ const PersonalPage = () => {
       <div className="container mt-5">
         <h2 className="title">Ditt Flow</h2>
         {userBlog.map((item: Blog) => (
-          <article className="card"  key={item.id}>
+          <article className="card" key={item.id}>
             <div className="card-header">
               <p className="card-header-title">{item.heading}</p>
             </div>
@@ -70,13 +112,36 @@ const PersonalPage = () => {
             </div>
 
             <div className="card-footer">
-              <a href="#" className="card-footer-item">Redigera</a>
-              <a href="#" className="card-footer-item">Ta bort</a>
+              <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
+              <button className="card-footer-item">Ta bort</button>
             </div>
           </article>
         ))}
       </div>
 
+      {user && user.isAdmin ? (
+        <div className="container mt-5">
+          <h2 className="title">Admin Flow</h2>
+          {blog!.map((item: Blog) => (
+            <article className="card" key={item.id}>
+              <div className="card-header">
+                <p className="card-header-title">{item.heading}</p>
+              </div>
+              <div className="card-content">
+                <p className="content">
+                  {item.about}
+                </p>
+                <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
+              </div>
+
+              <div className="card-footer">
+                <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
+                <button className="card-footer-item">Ta bort</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : null}
     </>
 
   )

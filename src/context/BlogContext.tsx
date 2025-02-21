@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
-import { Blog, BlogContextType } from "../types/blog.types";
+import { Blog, PostBlog, BlogContextType, PutBlog } from "../types/blog.types";
 import { User } from "../types/auth.types";
 import { jwtDecode } from 'jwt-decode';
 
@@ -34,13 +34,13 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
                     let tempUserPost: Blog[] = [];
 
                     data.forEach(post => {
-                        if(post.email === decoded.email){
+                        if (post.email === decoded.email) {
                             tempUserPost.push(post);
-                        }                        
+                        }
                     });
 
-                    setUserBlog(tempUserPost); 
-                    
+                    setUserBlog(tempUserPost);
+
                 }
 
                 setBlog(data);
@@ -52,11 +52,62 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
     }
 
 
+    const postBlog = async (blog: PostBlog) => {
+        const token = localStorage.getItem("trespasser");
+
+        if (!token) {
+            return;
+        }
+        try {
+            const res = await fetch("https://react-m3-backend-nest-js-1050979898493.us-central1.run.app/blog/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify(blog)
+            })
+
+            if (res.ok) {
+                allBlog();
+            }
+
+        } catch (error) {
+            console.log("Error: " + error);
+        } finally {
+        }
+    }
+
+    const putBlog = async (blog: PutBlog, id: number) => {
+        const token = localStorage.getItem("trespasser");
+
+        if (!token) {
+            return;
+        }
+        try {
+            const res = await fetch(`https://react-m3-backend-nest-js-1050979898493.us-central1.run.app/blog/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: JSON.stringify(blog)
+            })
+
+            if (res.ok) {
+                allBlog();
+            }
+
+        } catch (error) {
+            console.log("Error: " + error);
+        } finally {
+        }
+    }
 
 
 
     return (
-        <BlogContext.Provider value={{ allBlog, blog, userBlog }}>
+        <BlogContext.Provider value={{ allBlog, blog, userBlog, postBlog, putBlog }}>
             {children}
         </BlogContext.Provider>
 
