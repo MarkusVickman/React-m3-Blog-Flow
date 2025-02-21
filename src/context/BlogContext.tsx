@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect, useContext, ReactNode } from "react";
-import { Blog, PostBlog, BlogContextType, PutBlog } from "../types/blog.types";
+import { createContext, useState, useContext, ReactNode } from "react";
+import { Blog, PostBlog, BlogContextType } from "../types/blog.types";
 import { User } from "../types/auth.types";
 import { jwtDecode } from 'jwt-decode';
 
@@ -78,7 +78,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
-    const putBlog = async (blog: PutBlog, id: number) => {
+    const putBlog = async (blog: PostBlog, id: number) => {
         const token = localStorage.getItem("trespasser");
 
         if (!token) {

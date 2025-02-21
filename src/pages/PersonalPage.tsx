@@ -12,7 +12,7 @@ const PersonalPage = () => {
   const [newAbout, setNewAbout] = useState('');
   const [formHeader, setFormHeader] = useState('Nytt inlägg');
   const [id, setId] = useState<number | null>(null);
-  const [date, setDate] = useState(new Date().toLocaleDateString());
+  const date = (new Date().toLocaleDateString());
 
 
   useEffect(() => {
