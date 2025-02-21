@@ -1,15 +1,11 @@
 
-import React, { useEffect, useState } from "react"
-import './css/LoginPage.css'
+import { useEffect } from "react"
 import { useBlog } from "../context/BlogContext";
-import { Link, useNavigate } from "react-router-dom";
 import { Blog } from "../types/blog.types"
 import { NavLink } from 'react-router-dom';
 
-
 const HomePage = () => {
 
-  const navigate = useNavigate();
   const { blog, allBlog } = useBlog();
 
 

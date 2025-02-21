@@ -1,8 +1,6 @@
 
-import React, { useEffect, useState } from "react"
-import './css/LoginPage.css'
+import { useEffect } from "react"
 import { useBlog } from "../context/BlogContext";
-import { Blog } from "../types/blog.types"
 import { useParams } from "react-router-dom";
 
 const SinglePage = () => {

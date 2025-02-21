@@ -1,4 +1,3 @@
-import './css/AboutPage.css'
 
 const AboutPage = () => {
   return (

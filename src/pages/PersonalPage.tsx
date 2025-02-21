@@ -1,23 +1,19 @@
 
 import React, { useEffect, useState } from "react"
-import './css/LoginPage.css'
 import { useBlog } from "../context/BlogContext";
 import { Blog, PostBlog } from "../types/blog.types"
 import { useAuth } from "../context/AuthContext";
 
 const PersonalPage = () => {
 
-  const { userBlog, allBlog, blog, postBlog, putBlog } = useBlog();
+  const { userBlog, allBlog, blog, postBlog, putBlog, deleteBlog } = useBlog();
   const { user } = useAuth();
   const [newHeading, setNewHeading] = useState('');
   const [newAbout, setNewAbout] = useState('');
   const [formHeader, setFormHeader] = useState('Nytt inlägg');
   const [id, setId] = useState<number | null>(null);
-  // const [error, setError] = useState('');
   const [date, setDate] = useState(new Date().toLocaleDateString());
 
-  //const thisDate = new Date().toLocaleDateString();
-  //setDate(thisDate);
 
   useEffect(() => {
     allBlog();
@@ -46,6 +42,12 @@ const PersonalPage = () => {
     }
     if (id !== null) {
       putBlog(newPost, id);
+    }
+  }
+
+  const submitDelete = async (id: number) => {
+    if (id !== null) {
+      deleteBlog(id);
     }
   }
 
@@ -113,7 +115,7 @@ const PersonalPage = () => {
 
             <div className="card-footer">
               <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
-              <button className="card-footer-item">Ta bort</button>
+              <button className="card-footer-item" onClick={() => submitDelete(item.id)}>Ta bort</button>
             </div>
           </article>
         ))}
@@ -136,7 +138,7 @@ const PersonalPage = () => {
 
               <div className="card-footer">
                 <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
-                <button className="card-footer-item">Ta bort</button>
+                <button className="card-footer-item" onClick={() => submitDelete(item.id)}>Ta bort</button>
               </div>
             </article>
           ))}

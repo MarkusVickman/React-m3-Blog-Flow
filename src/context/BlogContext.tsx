@@ -104,10 +104,35 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
+    const deleteBlog = async (id: number) => {
+        const token = localStorage.getItem("trespasser");
+
+        if (!token) {
+            return;
+        }
+        try {
+            const res = await fetch(`https://react-m3-backend-nest-js-1050979898493.us-central1.run.app/blog/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            })
+
+            if (res.ok) {
+                allBlog();
+            }
+
+        } catch (error) {
+            console.log("Error: " + error);
+        } finally {
+        }
+    }
+
 
 
     return (
-        <BlogContext.Provider value={{ allBlog, blog, userBlog, postBlog, putBlog }}>
+        <BlogContext.Provider value={{ allBlog, blog, userBlog, postBlog, putBlog, deleteBlog }}>
             {children}
         </BlogContext.Provider>
 

@@ -1,8 +1,6 @@
 
-import React, { useEffect, useState } from "react"
-import './css/LoginPage.css'
+import { useEffect } from "react"
 import { useBlog } from "../context/BlogContext";
-import { Blog } from "../types/blog.types"
 import { useParams } from "react-router-dom";
 
 const PersonalPage = () => {
@@ -11,9 +9,9 @@ const PersonalPage = () => {
     const { email } = useParams();
     const { blog, allBlog } = useBlog();
 
-  useEffect(() => {
-    allBlog();
-  }, []);
+    useEffect(() => {
+        allBlog();
+    }, []);
 
 
     if (!blog) {
@@ -41,13 +39,10 @@ const PersonalPage = () => {
                                 </p>
                                 <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
                             </div>
-                        </article>            
-
-        ))}
+                        </article>
+                    ))}
             </div>
-
         </>
-
     )
 }
 

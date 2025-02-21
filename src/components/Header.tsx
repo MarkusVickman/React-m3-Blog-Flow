@@ -1,20 +1,10 @@
 import { NavLink } from "react-router-dom"
 import { useAuth } from "../context/AuthContext";
 import './Header.css';
-import { useState } from "react";
 
 const Header = () => {
 
     const { user, logout } = useAuth();
-    /*const [isActive, setIsActive] = useState(false);
-
-    const burgermenu = () => {
-        if (isActive === true) {
-            setIsActive(false);
-        } else {
-            setIsActive(true);
-        }
-    }*/
 
 
         function toggleBurgerMenu() {

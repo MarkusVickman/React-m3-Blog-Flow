@@ -17,6 +17,7 @@ export interface BlogContextType {
     allBlog: () => void,    
     postBlog: (blog: PostBlog) => void,
     putBlog: (blog: PostBlog, id: number) => void,
+    deleteBlog: (id: number) => void,
     userBlog: Blog[] | null
 }
 
