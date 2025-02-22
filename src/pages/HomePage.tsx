@@ -2,7 +2,7 @@
 import { useEffect } from "react"
 import { useBlog } from "../context/BlogContext";
 import { Blog } from "../types/blog.types"
-import { NavLink } from 'react-router-dom';
+import BlogProp from "../components/BlogArticleProp";
 
 const HomePage = () => {
 
@@ -27,21 +27,8 @@ const HomePage = () => {
       <section className="container">
         <h1 className="title ">The Flow</h1>
 
-        {blog.map((item: Blog) => (
-          <article className="card"  key={item.id}>
-            <div className="card-header">
-              <p className="card-header-title">{item.heading}</p>
-            </div>
-            <div className="card-content">
-              <p className="content">
-                {item.about}
-                </p>
-                <NavLink to={"/follow/" + item.email} className="mr-5">@{item.name}#All</NavLink>
-                <NavLink to={"/single/" + item.id} className="mr-5">@{item.name}#{item.id}</NavLink>
-                <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
-            </div>
-          </article>
-        ))}
+        {blog.map((blog: Blog) => <BlogProp blog={blog} key={blog.id} />)}
+
       </section>
 
     </>

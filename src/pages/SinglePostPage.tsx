@@ -2,6 +2,8 @@
 import { useEffect } from "react"
 import { useBlog } from "../context/BlogContext";
 import { useParams } from "react-router-dom";
+import BlogProp from "../components/BlogArticleProp";
+import { Blog } from "../types/blog.types"
 
 const SinglePage = () => {
 
@@ -28,7 +30,7 @@ const SinglePage = () => {
   }
 
   // Hitta det första objektet med matchande id
-  const item = blog.find(item => item.id === intId);
+  const item: Blog | undefined = blog.find(item => item.id === intId);
 
   if (!item) {
     return (
@@ -41,19 +43,10 @@ const SinglePage = () => {
 
   return (
     <>
+
       <div className="container mt-5">
-        <h2 className="title">Flow</h2>        
-            <article className="card" key={item.id}>
-              <div className="card-header">
-                <p className="card-header-title">{item.heading}</p>
-              </div>
-              <div className="card-content">
-                <p className="content">
-                  {item.about}
-                </p>
-                <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
-              </div>
-            </article>
+        <h2 className="title">Ett Flow</h2>
+        {item && <BlogProp blog={item} key={item.id} />}
       </div>
 
     </>

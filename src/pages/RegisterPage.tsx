@@ -22,12 +22,44 @@ const RegisterPage = () => {
         e.preventDefault();
         setError('');
 
-        try {
-            await register({ name, email, password });
-            navigate("/login");
-        } catch (error) {
-            setError("Felaktig registrering:" + error)
+        if (checkInput()) {
+            try {
+                await register({ name, email, password });
+                navigate("/login");
+            } catch (error) {
+                setError("Felaktig registrering:" + error)
 
+            }
+        }
+    }
+
+    //Metod som kontrollerar inmatningar och returnerar true om korrekt inmatat.
+    const checkInput = () => {
+        let validationErrors: boolean = true;
+        let errorString = "";
+
+        if (email.length < 6) {
+            validationErrors = false;
+            errorString = "Email måste vara längre än 6 tecken. ";
+        }
+
+        if (password.length < 6) {
+            validationErrors = false;
+            errorString = errorString + "Lösenord måste vara längre än 6 tecken. ";
+        }
+
+        if (name.length < 4) {
+            validationErrors = false;
+            errorString = errorString + "Visningsnamn måste vara längre än 4 tecken. ";
+
+        }
+
+        if (validationErrors) {
+            setError("");
+            return true
+        } else {
+            setError(errorString);
+            return false
         }
     }
 

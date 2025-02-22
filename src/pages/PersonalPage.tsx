@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useBlog } from "../context/BlogContext";
 import { Blog, PostBlog } from "../types/blog.types"
 import { useAuth } from "../context/AuthContext";
+import AdminProp from "../components/BlogAdminProp";
 
 const PersonalPage = () => {
 
@@ -13,6 +14,7 @@ const PersonalPage = () => {
   const [formHeader, setFormHeader] = useState('Nytt inlägg');
   const [id, setId] = useState<number | null>(null);
   const date = (new Date().toLocaleDateString());
+  const [error, setError] = useState('');
 
 
   useEffect(() => {
@@ -28,20 +30,26 @@ const PersonalPage = () => {
 
   const submitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newPost: PostBlog = {
-      heading: newHeading,
-      about: newAbout
+
+    if (checkInput()) {
+      const newPost: PostBlog = {
+        heading: newHeading,
+        about: newAbout
+      }
+      postBlog(newPost);
     }
-    postBlog(newPost);
   }
 
   const submitPut = async () => {
-    const newPost: PostBlog = {
-      heading: newHeading,
-      about: newAbout
-    }
-    if (id !== null) {
-      putBlog(newPost, id);
+
+    if (checkInput()) {
+      const newPost: PostBlog = {
+        heading: newHeading,
+        about: newAbout
+      }
+      if (id !== null) {
+        putBlog(newPost, id);
+      }
     }
   }
 
@@ -52,6 +60,8 @@ const PersonalPage = () => {
   }
 
   const fillForm = (blog: Blog) => {
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     setNewAbout(blog.about);
     setNewHeading(blog.heading);
@@ -66,6 +76,34 @@ const PersonalPage = () => {
       <h1 className="title">Hantera ditt Flow</h1>
       <p><b>Bloggdata kunde inte laddas...</b></p>;
     </>
+  }
+
+
+  //Metod som kontrollerar inmatningar och returnerar true om korrekt inmatat.
+  const checkInput = () => {
+    let validationErrors: boolean = true;
+    let errorString = "";
+
+    if (newHeading.length < 1) {
+      validationErrors = false;
+
+      errorString = "Inlägget måste ha en titel. ";
+    }
+
+    if (newAbout.length < 5) {
+      validationErrors = false;
+
+      errorString = errorString + "Inlägget måste vara minst 5 tecken långt. ";
+
+    }
+
+    if (validationErrors) {
+      setError("");
+      return true
+    } else {
+      setError(errorString);
+      return false
+    }
   }
 
   return (
@@ -96,52 +134,25 @@ const PersonalPage = () => {
               </button>
             }
           </div>
+          {error && (
+            <div>
+              {error}
+            </div>
+          )}
         </form>
       </div>
 
       <div className="container mt-5">
         <h2 className="title">Ditt Flow</h2>
-        {userBlog.map((item: Blog) => (
-          <article className="card" key={item.id}>
-            <div className="card-header">
-              <p className="card-header-title">{item.heading}</p>
-            </div>
-            <div className="card-content">
-              <p className="content">
-                {item.about}
-              </p>
-              <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
-            </div>
+        {blog!.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
 
-            <div className="card-footer">
-              <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
-              <button className="card-footer-item" onClick={() => submitDelete(item.id)}>Ta bort</button>
-            </div>
-          </article>
-        ))}
       </div>
 
       {user && user.isAdmin ? (
         <div className="container mt-5">
           <h2 className="title">Admin Flow</h2>
-          {blog!.map((item: Blog) => (
-            <article className="card" key={item.id}>
-              <div className="card-header">
-                <p className="card-header-title">{item.heading}</p>
-              </div>
-              <div className="card-content">
-                <p className="content">
-                  {item.about}
-                </p>
-                <time className="is-size-7 is-pulled-right"><b>{new Date(item.date).toLocaleDateString()}</b></time>
-              </div>
+          {blog!.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
 
-              <div className="card-footer">
-                <button className="card-footer-item" onClick={() => fillForm(item)}>Redigera</button>
-                <button className="card-footer-item" onClick={() => submitDelete(item.id)}>Ta bort</button>
-              </div>
-            </article>
-          ))}
         </div>
       ) : null}
     </>

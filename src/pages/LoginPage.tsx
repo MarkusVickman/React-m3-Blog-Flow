@@ -21,12 +21,31 @@ const LoginPage = () => {
         e.preventDefault();
         setError('');
 
-        try {
-            await login({ email, password });
-            navigate("/personal");
-        } catch (error) {
-            setError("Felaktig inloggning. Säkerställ att lösenord och email är korrekt.")
+        if (checkInput()) {
+            try {
+                await login({ email, password });
+                navigate("/personal");
+            } catch (error) {
+                setError("Felaktig inloggning. Säkerställ att lösenord och email är korrekt.")
 
+            }
+        }
+    }
+
+    //Metod som kontrollerar inmatningar och returnerar true om korrekt inmatat.
+    const checkInput = () => {
+        let validationErrors: boolean = true;
+        if (email.length < 6 || password.length < 6) {
+            validationErrors = false;
+
+            setError("Lösenord och email måste vara längre än 6 tecken.");
+        }
+
+        if (validationErrors) {
+            setError("");
+            return true
+        } else {
+            return false
         }
     }
 
