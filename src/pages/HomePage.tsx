@@ -18,7 +18,7 @@ const HomePage = () => {
 
     return <>
       <h1 className="title">Flow</h1>
-      <p><b>Bloggdata kunde inte laddas...</b></p>;
+      <p><b>Bloggdata laddas in...</b></p>;
     </>
   }
 

@@ -16,15 +16,16 @@ const SinglePage = () => {
 
   const { blog, allBlog } = useBlog();
 
+  /*
   useEffect(() => {
     allBlog();
   }, []);
-
+*/
 
   if (!blog) {
 
     return <>
-      <h1 className="title">Följ Flow</h1>
+      <h1 className="title">Ett Flow</h1>
       <p><b>Bloggdata kunde inte laddas...</b></p>;
     </>
   }
@@ -35,7 +36,7 @@ const SinglePage = () => {
   if (!item) {
     return (
       <>
-        <h1 className="title">Inlägg inte hittat</h1>
+        <h1 className="title">Ett Flow</h1>
         <p><b>Det finns inget inlägg med det angivna ID:t.</b></p>
       </>
     );

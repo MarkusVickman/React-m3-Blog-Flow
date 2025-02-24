@@ -14,7 +14,7 @@ const Header = () => {
         return (
             <header>
 
-                <nav className="navbar" role="navigation" aria-label="main navigation">
+                <nav className="navbar" aria-label="main navigation">
                     <div className="navbar-brand">
                         <NavLink to="/" className="navbar-item is-size-3 has-text-weight-bold">Flow</NavLink>
 

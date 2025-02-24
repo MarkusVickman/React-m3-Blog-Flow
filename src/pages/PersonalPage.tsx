@@ -59,6 +59,13 @@ const PersonalPage = () => {
     }
   }
 
+  const cancelPut = () => {
+    setNewAbout('');
+    setNewHeading('');
+    setId(null);
+    setFormHeader("Nytt inlägg");
+  }
+
   const fillForm = (blog: Blog) => {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,14 +75,6 @@ const PersonalPage = () => {
     setId(blog.id);
     setFormHeader("Redigera inlägg: " + blog.id);
 
-  }
-
-  if (!userBlog) {
-
-    return <>
-      <h1 className="title">Hantera ditt Flow</h1>
-      <p><b>Bloggdata kunde inte laddas...</b></p>;
-    </>
   }
 
 
@@ -106,6 +105,17 @@ const PersonalPage = () => {
     }
   }
 
+
+
+  if (!blog || !userBlog) {
+
+    return (<>
+      <h1 className="title">Flow</h1>
+      <p><b>Laddar Flow data...</b></p>;
+    </>)
+  }
+
+
   return (
     <>
       <div className="container mt-4">
@@ -120,7 +130,7 @@ const PersonalPage = () => {
 
           <div className="card-content">
             <input className="input" type="text" id="newabout" placeholder="Skriv här.." required value={newAbout} onChange={(e) => setNewAbout(e.target.value)} />
-            <time className="is-size-7 is-pulled-right"><b>{date}</b></time>
+            <b><time className="is-size-7 is-pulled-right">{date}</time></b>
           </div>
 
           <div className="card-footer">
@@ -129,9 +139,14 @@ const PersonalPage = () => {
                 Spara
               </button>
             ) :
-              <button className="card-footer-item has-text-weight-bold" onClick={submitPut}>
-                Ändra
-              </button>
+              <>
+                <button className="card-footer-item has-text-weight-bold" onClick={submitPut}>
+                  Ändra
+                </button>
+                <button className="card-footer-item has-text-weight-bold" onClick={cancelPut}>
+                  Avbryt
+                </button>
+              </>
             }
           </div>
           {error && (
@@ -144,14 +159,14 @@ const PersonalPage = () => {
 
       <div className="container mt-5">
         <h2 className="title">Ditt Flow</h2>
-        {blog!.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
+        {userBlog.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
 
       </div>
 
       {user && user.isAdmin ? (
         <div className="container mt-5">
           <h2 className="title">Admin Flow</h2>
-          {blog!.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
+          {blog.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
 
         </div>
       ) : null}
