@@ -7,20 +7,27 @@ import AdminProp from "../components/BlogAdminProp";
 
 const PersonalPage = () => {
 
+  /*
+  -läser in funktioner och data från BlogContext
+  -formulärdata
+  */
   const { userBlog, allBlog, blog, postBlog, putBlog, deleteBlog } = useBlog();
   const { user } = useAuth();
   const [newHeading, setNewHeading] = useState('');
   const [newAbout, setNewAbout] = useState('');
+
+  // Formulärhantering
   const [formHeader, setFormHeader] = useState('Nytt inlägg');
   const [id, setId] = useState<number | null>(null);
   const date = (new Date().toLocaleDateString());
   const [error, setError] = useState('');
 
-
+  //Läser in alla inlägg
   useEffect(() => {
     allBlog();
   }, []);
 
+  //Resettar komponenten när bloginläggen uppdateras
   useEffect(() => {
     setNewAbout('');
     setNewHeading('');
@@ -28,6 +35,7 @@ const PersonalPage = () => {
     setFormHeader("Nytt inlägg");
   }, [blog]);
 
+  //Vid submit testas inmatning sen skickas det nya inlägget
   const submitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -40,6 +48,7 @@ const PersonalPage = () => {
     }
   }
 
+  //Vid put-submit testas inmatning sen skickas inlägget
   const submitPut = async () => {
 
     if (checkInput()) {
@@ -53,12 +62,14 @@ const PersonalPage = () => {
     }
   }
 
+  //Vid delete tas inlägget bort
   const submitDelete = async (id: number) => {
     if (id !== null) {
       deleteBlog(id);
     }
   }
 
+  //Om en uppdatering avbryts återställs formuläret
   const cancelPut = () => {
     setNewAbout('');
     setNewHeading('');
@@ -66,15 +77,13 @@ const PersonalPage = () => {
     setFormHeader("Nytt inlägg");
   }
 
+  //Fyller i formuläret med blog-objektet
   const fillForm = (blog: Blog) => {
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
     setNewAbout(blog.about);
     setNewHeading(blog.heading);
     setId(blog.id);
     setFormHeader("Redigera inlägg: " + blog.id);
-
   }
 
 
@@ -105,8 +114,7 @@ const PersonalPage = () => {
     }
   }
 
-
-
+  // returneras om inläggen inte kan laddas in
   if (!blog || !userBlog) {
 
     return (<>
@@ -115,7 +123,7 @@ const PersonalPage = () => {
     </>)
   }
 
-
+  /* Ett formulär som kan posta nya inlägg eller redigera gamla. Knappar samt text ändras dynamiskt */
   return (
     <>
       <div className="container mt-4">
@@ -157,21 +165,20 @@ const PersonalPage = () => {
         </form>
       </div>
 
+      {/* skriver ut aktiva användarens flöde */}
       <div className="container mt-5">
         <h2 className="title">Ditt Flow</h2>
         {userBlog.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
-
       </div>
 
+      {/* Om aktiva användaren är en admin så skrivs alla inlägg ut som också går att redigera samt ta bort */}
       {user && user.isAdmin ? (
         <div className="container mt-5">
           <h2 className="title">Admin Flow</h2>
           {blog.map((blog: Blog) => (<AdminProp blog={blog} key={blog.id} submitDelete={submitDelete} fillForm={fillForm} />))}
-
         </div>
       ) : null}
     </>
-
   )
 }
 

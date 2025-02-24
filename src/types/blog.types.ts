@@ -1,3 +1,4 @@
+//Interface för blogginlägg som ska skivas ut
 export interface Blog {
     id: number,
     heading: string,
@@ -7,11 +8,13 @@ export interface Blog {
     name: string
 }
 
+//Interface för att posta och ändra inlägg
 export interface PostBlog {
     heading: string,
     about: string,
 }
 
+//Interface för att dela blogContext med dess metoder och interfaces till sidor och komponenter
 export interface BlogContextType {
     blog: Blog[] | null,
     allBlog: () => void,    

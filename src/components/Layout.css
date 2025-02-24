@@ -1,3 +1,7 @@
+/*
+CSS är specifik till Layout.tsx.
+*/
+
 /*För att footern ska fungera på ett bra sätt*/
 .page-container {
     position: relative;

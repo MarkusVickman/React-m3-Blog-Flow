@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"
 import Footer from "./Footer"
 import './Layout.css';
 
+//Appens visningsstruktur. Här infogas header(meny), huvudinnehåll som väljs i routing samt footer.
 const Layout = () => {
   return (
     <>

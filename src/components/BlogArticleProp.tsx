@@ -4,15 +4,14 @@ import { NavLink } from 'react-router-dom';
 //Interface för propsen som komponenten tar emot
 interface BlogProps {
   blog: Blog;
-  // editPost: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-//Child som tar emot props enligt interface Todo
+//Child som tar emot props enligt interface BlogProps samt Blog
 const BlogProp: React.FC<BlogProps> = ({ blog }) => {
 
+  //Returnerar blogginlägg som visas på startsidan, singlePage samt FollowUserPage
   return (
     <>
-
       <article className="card" key={blog.id}>
         <div className="card-header">
           <h3 className="card-header-title">{blog.heading}</h3>
@@ -26,9 +25,7 @@ const BlogProp: React.FC<BlogProps> = ({ blog }) => {
           <b><time className="is-size-7 is-pulled-right">{new Date(blog.date).toLocaleDateString()}</time></b>
         </div>
       </article>
-
     </>
-
   )
 }
 

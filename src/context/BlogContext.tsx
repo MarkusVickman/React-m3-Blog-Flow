@@ -3,17 +3,22 @@ import { Blog, PostBlog, BlogContextType } from "../types/blog.types";
 import { User } from "../types/auth.types";
 import { jwtDecode } from 'jwt-decode';
 
+// Initierar BlogContext
 const BlogContext = createContext<BlogContextType | null>(null);
 
+// Interface för blogprovider
 export interface BlogProviderProps {
     children: ReactNode
 }
 
+// exporterar en komponent med namnet BlogProvider
 export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
 
+    // initierar blog samt userBlog
     const [blog, setBlog] = useState<Blog[] | null>(null);
     const [userBlog, setUserBlog] = useState<Blog[] | null>(null);
 
+    //Api GET som hämtar in alla inlägg
     const allBlog = async () => {
 
         try {
@@ -27,22 +32,21 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
             if (res.ok) {
                 const data = await res.json() as Blog[];
 
+                // Läser in och avkodar jwt om finns
                 if (localStorage.getItem("trespasser")) {
                     const token = JSON.stringify(localStorage.getItem("trespasser"));
                     const decoded: User = jwtDecode(token);
 
                     let tempUserPost: Blog[] = [];
 
+                    //Filtrerar och lagrar aktiva användarens inlägg i en egen array 
                     data.forEach(post => {
                         if (post.email === decoded.email) {
                             tempUserPost.push(post);
                         }
                     });
-
                     setUserBlog(tempUserPost);
-
                 }
-
                 setBlog(data);
             }
 
@@ -51,7 +55,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
-
+    //Skickar POST med ett nytt blogginlägg, kräver ok bearer 
     const postBlog = async (blog: PostBlog) => {
         const token = localStorage.getItem("trespasser");
 
@@ -68,6 +72,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
                 body: JSON.stringify(blog)
             })
 
+            // Vid ok respons uppdateras bloggdata
             if (res.ok) {
                 allBlog();
             }
@@ -78,6 +83,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
+    //Skickar PUT med ett uppdaterat blogginlägg, kräver ok bearer samt id 
     const putBlog = async (blog: PostBlog, id: number) => {
         const token = localStorage.getItem("trespasser");
 
@@ -94,6 +100,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
                 body: JSON.stringify(blog)
             })
 
+            // Vid ok respons uppdateras bloggdata
             if (res.ok) {
                 allBlog();
             }
@@ -104,6 +111,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
+    //Tar bort ett inlägg med angivet id
     const deleteBlog = async (id: number) => {
         const token = localStorage.getItem("trespasser");
 
@@ -119,6 +127,7 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
                 }
             })
 
+            // Vid ok respons uppdateras bloggdata
             if (res.ok) {
                 allBlog();
             }
@@ -129,18 +138,15 @@ export const BlogProvider: React.FC<BlogProviderProps> = ({ children }) => {
         }
     }
 
-
-
+    //Returnerar Context med funktioner samt data
     return (
         <BlogContext.Provider value={{ allBlog, blog, userBlog, postBlog, putBlog, deleteBlog }}>
             {children}
         </BlogContext.Provider>
-
     )
-
 }
 
-
+//Exporterar Context
 export const useBlog = (): BlogContextType => {
     const context = useContext(BlogContext);
 

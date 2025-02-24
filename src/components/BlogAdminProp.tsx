@@ -7,13 +7,12 @@ interface BlogProps {
   submitDelete: (id: number) => void
 };
 
-//Child som tar emot props enligt interface Todo
+//Child som tar emot props enligt interface BlogProps samt Blog och metoder
 const AdminProp: React.FC<BlogProps> = ({ blog, fillForm, submitDelete }) => {
 
-
+//Returnerar styling och struktur för blogginlägg som visas på PersonalPage med redigeringsmöjligheter
 return (
   <>
-
     <article className="card" key={blog.id}>
       <div className="card-header">
         <h3 className="card-header-title">{blog.heading}</h3>
@@ -30,9 +29,7 @@ return (
         <button className="card-footer-item" onClick={() => submitDelete(blog.id)}>Ta bort</button>
       </div>
     </article>
-
   </>
-
 )
 }
 

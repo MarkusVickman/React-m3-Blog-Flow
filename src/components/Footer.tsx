@@ -1,9 +1,8 @@
 import './Footer.css';
 import { NavLink } from 'react-router-dom';
 
+//Returnerar enkel footer
 const Footer = () => {
-
-
     return (
         <footer className="footer">
         <div className="content has-text-centered">

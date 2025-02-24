@@ -2,21 +2,26 @@ import React, { useEffect, useState } from "react"
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+// Sida/komponent för att logga in användare
 const LoginPage = () => {
+
+    //Variabler för formulär-indata
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    //Läser in inloggningsfunktionen samt användare(localstorage) 
     const { login, user } = useAuth();
     const navigate = useNavigate();
 
+    //Vid start av sidan kontrolleras om användaren redan är inloggad.
     useEffect(() => {
         if (user) {
             navigate("/personal")
         }
     }, [user])
 
-
+    //Vid submit skickas data till metod i AuthContext
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
@@ -27,7 +32,6 @@ const LoginPage = () => {
                 navigate("/personal");
             } catch (error) {
                 setError("Felaktig inloggning. Säkerställ att lösenord och email är korrekt.")
-
             }
         }
     }
@@ -37,7 +41,6 @@ const LoginPage = () => {
         let validationErrors: boolean = true;
         if (email.length < 6 || password.length < 6) {
             validationErrors = false;
-
             setError("Lösenord och email måste vara längre än 6 tecken.");
         }
 
@@ -49,6 +52,7 @@ const LoginPage = () => {
         }
     }
 
+    /* Returnerar ett formulär för inloggning */
     return (
         <>
             <div className="container">

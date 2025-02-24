@@ -10,6 +10,11 @@ import RegisterPage from './pages/RegisterPage';
 import { BlogProvider } from './context/BlogContext';
 import FollowUserPage from './pages/FollowUserPage';
 
+/*
+-Routing som dirigerar till alla undersidor.
+-ProtectedRoute används för att kontrollera användare och bara släppa in inloggade användare på sidan.
+-BlogProvider är en context som ger tillgång till api-anrop samt api-data
+*/
 const router = createBrowserRouter([
 
     {

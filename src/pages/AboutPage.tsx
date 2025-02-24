@@ -1,4 +1,5 @@
 
+// Sidan om webbplatsen
 const AboutPage = () => {
   return (
     <section className="container">

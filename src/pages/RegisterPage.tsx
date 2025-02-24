@@ -2,22 +2,27 @@ import React, { useEffect, useState } from "react"
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+// Sida/komponent för att registrera nya användare
 const RegisterPage = () => {
+
+    //Variabler för formulär-indata
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
 
+    //Läser in registreringsfunktion samt användare(localstorage) 
     const { register, user } = useAuth();
     const navigate = useNavigate();
 
+    //Vid start av sidan kontrolleras om användaren redan är inloggad.
     useEffect(() => {
         if (user) {
             navigate("/personal")
         }
     }, [user])
 
-
+    //Vid submit skickas data till metod i AuthContext
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
@@ -28,7 +33,6 @@ const RegisterPage = () => {
                 navigate("/login");
             } catch (error) {
                 setError("Felaktig registrering:" + error)
-
             }
         }
     }
@@ -51,7 +55,6 @@ const RegisterPage = () => {
         if (name.length < 4) {
             validationErrors = false;
             errorString = errorString + "Visningsnamn måste vara längre än 4 tecken. ";
-
         }
 
         if (validationErrors) {
@@ -63,10 +66,9 @@ const RegisterPage = () => {
         }
     }
 
+    /* Returnerar ett formulär för registrering */
     return (
-
         <>
-
             <div className="container">
                 <h1 className="title ">Registrera nytt konto</h1>
 
@@ -94,6 +96,7 @@ const RegisterPage = () => {
                             </span>
                         </p>
                     </div>
+
                     <div className="field">
                         <label className="label" htmlFor="password">Lösenord</label>
                         <p className="control has-icons-left">
@@ -105,12 +108,14 @@ const RegisterPage = () => {
                             </span>
                         </p>
                     </div>
+
                     <div className="field">
                         <p className="control">
                             <button className="button is-success" type="submit">
                                 Registrera
                             </button>
                         </p>
+
                         {error && (
                             <div>
                                 {error}
