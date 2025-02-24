@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# React Moment 3 - Flow
+Applikationen är en bloggplattform för kortare meddelanden. 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+* Det går att gå in på specifika inlägg 
+* Läsa alla inlägg från en specifik användare 
+* Det går även att ladda upp samt redigera sina egna inlägg på skyddad route
+* Adminkonton kan ändra(med admin signatur) samt ta bort allas inlägg på skyddad route
+* Det går att registrera nya konton. 
 
-Currently, two official plugins are available:
+Besök webbplatsen [Flow](https://flow-blog.netlify.app/).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Uppgift
+Uppgiften gick ut på att skapa en react applikation programmerad i TypeScript.
 
-## Expanding the ESLint configuration
+**Krav:**
+* Publik del med översikt av innehåll, tex de senaste inläggen/produkterna utskrivna
+* Dynamiska routes för enskilda items
+* Inloggningssystem med JWT-tokens
+* Skyddad administrativ del för innehållshantering (hantera inlägg/produkter)
+* Navigationsmeny som uppdateras efter inloggningsstatus (det ska framgå om användaren är inloggad eller inte).
+* React Router för routingstruktur med navigering i gränsnittet.
+* JWT-autentisering med tokenhantering, antingen lagrat i localStorage eller som HTTP-cookie.
+* TypeScript med väldefinierade interface/types
+* Responsiv design för olika skärmstorlekar
+* Felhantering och tydliga felmeddelanden vid formulärhantering och API-anrop
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Lösning
+Webbplatsen uppfyller alla kraven och använder många komponenter och sidkomponenter. 
 
-- Configure the top-level `parserOptions` property like this:
+* BlogContext används för Api-anrop och därifrån läses blogdata in.
+* AuthContext används för användar authentisering med api-anrop
+* blog.types.ts och auth.types.ts används för interface
+* Protected routes används för att skydda routes
+* BlogAdminProp.tsx samt BlogArticleProp.tsx används för styling och struktur av inlägg (Child)
+* Routing.tsx används för att specifiera webbplatsens routes samt tilldela Context.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Applikationen kopplas till en Nest.js backend och MySQL-databas genom api anrop med FetchAPI.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Testa
+För att testa eller bygga vidare på projektet behöver repot klonas och kommandot ` npm install ` ska köras i terminalen.
+För att testköra ` npm run dev `
+För att publicera ` npm run build `
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+**Markus Vickman**
+**MAVI2302**
